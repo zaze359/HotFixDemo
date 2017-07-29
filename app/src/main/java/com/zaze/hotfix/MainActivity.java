@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-
-import com.xuehai.poi.PptUtil;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,13 +23,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.main_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    PptUtil.pptToImage("/sdcard/aaa/科学.pptx", "/sdcard//aaa/ppt-img", "sss");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-//                LoadBugClass bugClass = new LoadBugClass();
-//                Toast.makeText(MainActivity.this, "测试调用方法 : " + bugClass.getBugString(), Toast.LENGTH_SHORT).show();
+                LoadBugClass bugClass = new LoadBugClass();
+                Toast.makeText(MainActivity.this, "测试调用方法 : " + bugClass.getBugString(), Toast.LENGTH_SHORT).show();
             }
         });
 
