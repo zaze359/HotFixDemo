@@ -27,9 +27,7 @@ public final class HotFix {
                 } else if (hasDexClassLoader()) {
                     injectAboveEqualApiLevel14(context, patchDexFile, patchClassName);
                 } else {
-
                     injectBelowApiLevel14(context, patchDexFile, patchClassName);
-
                 }
             } catch (Throwable th) {
             }
@@ -117,8 +115,7 @@ public final class HotFix {
         PathClassLoader pathClassLoader = (PathClassLoader) context.getClassLoader();
 
         Object a = combineArray(getDexElements(getPathList(pathClassLoader)),
-                getDexElements(getPathList(
-                        new DexClassLoader(patchDexFile, context.getDir("dex", 0).getAbsolutePath(), patchDexFile, context.getClassLoader()))));
+                getDexElements(getPathList(new DexClassLoader(patchDexFile, context.getDir("dex", 0).getAbsolutePath(), patchDexFile, context.getClassLoader()))));
         Object a2 = getPathList(pathClassLoader);
         setField(a2, a2.getClass(), "dexElements", a);
         pathClassLoader.loadClass(patchClassName);
@@ -149,16 +146,16 @@ public final class HotFix {
         declaredField.set(obj, obj2);
     }
 
-    private static Object combineArray(Object obj, Object obj2) {
-        Class componentType = obj2.getClass().getComponentType();
-        int length = Array.getLength(obj2);
-        int length2 = Array.getLength(obj) + length;
-        Object newInstance = Array.newInstance(componentType, length2);
-        for (int i = 0; i < length2; i++) {
-            if (i < length) {
-                Array.set(newInstance, i, Array.get(obj2, i));
+    private static Object combineArray(Object baseDex, Object fixObj) {
+        Class componentType = fixObj.getClass().getComponentType();
+        int fixClassLength = Array.getLength(fixObj);
+        int resultLength = Array.getLength(baseDex) + fixClassLength;
+        Object newInstance = Array.newInstance(componentType, resultLength);
+        for (int i = 0; i < resultLength; i++) {
+            if (i < fixClassLength) {
+                Array.set(newInstance, i, Array.get(fixObj, i));
             } else {
-                Array.set(newInstance, i, Array.get(obj, i - length));
+                Array.set(newInstance, i, Array.get(baseDex, i - fixClassLength));
             }
         }
         return newInstance;

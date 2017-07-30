@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import dalvik.system.DexClassLoader;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 LoadBugClass bugClass = new LoadBugClass();
+                Log.i("dexPath", "测试调用方法 : " + bugClass.getBugString());
                 Toast.makeText(MainActivity.this, "测试调用方法 : " + bugClass.getBugString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
+//        DexClassLoader loader = new DexClassLoader();
         findViewById(R.id.main_fix_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
