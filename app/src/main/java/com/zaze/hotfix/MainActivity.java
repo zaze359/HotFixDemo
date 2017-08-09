@@ -14,10 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import dalvik.system.DexClassLoader;
-
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,24 +23,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 LoadBugClass bugClass = new LoadBugClass();
-                Log.i("dexPath", "测试调用方法 : " + bugClass.getBugString());
+                Log.i(Tag.tag, "测试调用方法 : " + bugClass.getBugString());
                 Toast.makeText(MainActivity.this, "测试调用方法 : " + bugClass.getBugString(), Toast.LENGTH_SHORT).show();
             }
         });
-//        DexClassLoader loader = new DexClassLoader();
         findViewById(R.id.main_fix_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 File dexPath = new File(getDir("dex", Context.MODE_PRIVATE), "path_dex.jar");
-                Log.i("dexPath", dexPath.getAbsolutePath());
+                Log.i(Tag.tag, "dexPath : " + dexPath.getAbsolutePath());
+                // 准备补丁
                 prepareDex(MainActivity.this, dexPath, "path_dex.jar");
                 HotFix.patch(MainActivity.this, dexPath.getAbsolutePath(), "com.zaze.hotfix.BugClass");
             }
         });
     }
 
-
-    //
     public boolean prepareDex(Context context, File dexInternalStoragePath, String dex_file) {
         BufferedInputStream bis = null;
         OutputStream dexWriter = null;
